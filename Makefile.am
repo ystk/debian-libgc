@@ -32,12 +32,6 @@ extra =
 endif
 lib_LTLIBRARIES = libgc.la $(extra) 
 
-include_HEADERS = include/gc.h include/gc_local_alloc.h \
-include/gc_pthread_redirects.h include/gc_config_macros.h \
-include/leak_detector.h include/gc_typed.h @addincludes@
-
-EXTRA_HEADERS = include/gc_cpp.h include/gc_allocator.h
-
 if POWERPC_DARWIN
 asm_libgc_sources = powerpc_darwin_mach_dep.s
 else
@@ -65,7 +59,7 @@ EXTRA_libgc_la_SOURCES = alpha_mach_dep.S \
     sparc_sunos4_mach_dep.s ia64_save_regs_in_stack.s
 
 libgccpp_la_SOURCES = gc_cpp.cc
-libgccpp_la_LIBADD = $(THREADDLLIBS) $(UNWINDLIBS)
+libgccpp_la_LIBADD = $(THREADDLLIBS) $(UNWINDLIBS) libgc.la
 libgccpp_la_LDFLAGS = -version-info 1:2:0
 
 EXTRA_DIST += alpha_mach_dep.S mips_sgi_mach_dep.s sparc_mach_dep.S
@@ -134,11 +128,6 @@ CCASFLAGS += $(DEFS)
 dist_noinst_SCRIPTS = callprocs configure.host
     ## callprocs --- used by Makefile.{dj,direct}
     ## configure.host --- used by Makefile.{am,dj,direct}
-
-# headers which are not installed
-# (see include/Makefile.am for more)
-#
-dist_noinst_HEADERS = version.h
 
 # documentation which is not installed
 #

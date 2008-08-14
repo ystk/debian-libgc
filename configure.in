@@ -78,17 +78,13 @@ case "$THREADS" in
     THREADS=posix
     THREADDLLIBS=-lpthread
     case "$host" in
-     x86-*-linux* | ia64-*-linux* | i586-*-linux* | i686-*-linux* | x86_64-*-linux* | alpha-*-linux*)
+     *-*-linux*)
 	AC_DEFINE(GC_LINUX_THREADS)
 	AC_DEFINE(_REENTRANT)
         if test "${enable_parallel_mark}" = yes; then
 	  AC_DEFINE(PARALLEL_MARK)
 	fi
 	AC_DEFINE(THREAD_LOCAL_ALLOC)
-	;;
-     *-*-linux*)
-	AC_DEFINE(GC_LINUX_THREADS)
-	AC_DEFINE(_REENTRANT)
 	;;
      *-*-aix*)
 	AC_DEFINE(GC_AIX_THREADS)
