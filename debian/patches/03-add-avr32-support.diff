@@ -1,0 +1,124 @@
+Index: libgc-7.1.new/include/private/gcconfig.h
+===================================================================
+--- libgc-7.1.new.orig/include/private/gcconfig.h	2009-08-12 20:10:04.000000000 +0100
++++ libgc-7.1.new/include/private/gcconfig.h	2009-08-12 20:10:18.000000000 +0100
+@@ -258,6 +258,10 @@
+ #    define ARM32
+ #    define mach_type_known
+ # endif
++# if defined(LINUX) && defined(__avr32__)
++#    define AVR32
++#    define mach_type_known
++# endif
+ # if defined(LINUX) && defined(__sh__)
+ #    define SH
+ #    define mach_type_known
+@@ -1781,6 +1785,19 @@
+ #   endif
+ #endif
+ 
++# ifdef AVR32
++#   define MACH_TYPE "AVR32"
++#   define CPP_WORDSZ 32
++#   define ALIGNMENT 4
++#   define OS_TYPE "LINUX"
++#   define DYNAMIC_LOADING
++#   define LINUX_STACKBOTTOM
++#   define USE_GENERIC_PUSH_REGS
++#   define SEARCH_FOR_DATA_START
++      extern int _end[];
++#   define DATAEND (_end)
++# endif
++
+ # ifdef CRIS
+ #   define MACH_TYPE "CRIS"
+ #   define CPP_WORDSZ 32
+Index: libgc-7.1.new/include/private/thread_local_alloc.h
+===================================================================
+--- libgc-7.1.new.orig/include/private/thread_local_alloc.h	2009-08-12 20:10:04.000000000 +0100
++++ libgc-7.1.new/include/private/thread_local_alloc.h	2009-08-12 20:10:18.000000000 +0100
+@@ -39,7 +39,7 @@
+ #     else
+ #       define USE_WIN32_COMPILER_TLS
+ #     endif /* !GNU */
+-#   elif defined(LINUX) && !defined(ARM32) && \
++#   elif defined(LINUX) && !defined(ARM32) && !defined(AVR32) && \
+ 		 (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >=3))
+ #     define USE_COMPILER_TLS
+ #   elif (defined(GC_DGUX386_THREADS) || defined(GC_OSF1_THREADS) || \
+Index: libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops/sysdeps/gcc/avr32.h
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops/sysdeps/gcc/avr32.h	2009-08-12 20:10:18.000000000 +0100
+@@ -0,0 +1,44 @@
++/*
++ * Copyright (C) 2009 Bradley Smith <brad@brad-smith.co.uk>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included
++ * in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
++ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
++ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ */
++
++#include "../all_atomic_load_store.h"
++
++#include "../ordered.h"  /* There are no multiprocessor implementations. */
++
++#include "../test_and_set_t_is_ao_t.h"
++
++AO_INLINE AO_TS_VAL_t
++AO_test_and_set(volatile AO_TS_t *addr) {
++	int ret;
++
++	__asm__ __volatile__(
++		"xchg %[old], %[mem], %[newv]"
++		: [old] "=&r"(ret)
++		: [mem] "r"(addr), [newv] "r"(1)
++		: "memory");
++
++	return ret;
++}
++
++#define AO_HAVE_test_and_set
+Index: libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops.h
+===================================================================
+--- libgc-7.1.new.orig/libatomic_ops-1.2/src/atomic_ops.h	2009-08-12 20:10:04.000000000 +0100
++++ libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops.h	2009-08-12 20:10:18.000000000 +0100
+@@ -229,6 +229,9 @@
+ # if defined(__cris__) || defined(CRIS)
+ #   include "atomic_ops/sysdeps/gcc/cris.h"
+ # endif
++# if defined(__avr32__)
++#   include "atomic_ops/sysdeps/gcc/avr32.h"
++# endif
+ #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
+ 
+ #if defined(__INTEL_COMPILER) && !defined(AO_USE_PTHREAD_DEFS)
+Index: libgc-7.1.new/mach_dep.c
+===================================================================
+--- libgc-7.1.new.orig/mach_dep.c	2009-08-12 20:10:25.000000000 +0100
++++ libgc-7.1.new/mach_dep.c	2009-08-12 20:10:46.000000000 +0100
+@@ -175,7 +175,7 @@
+ #   if defined(HAVE_PUSH_REGS)
+       GC_push_regs();
+ #   elif defined(UNIX_LIKE) && !defined(DARWIN) && !defined(ARM32) && \
+-	 !defined(HURD)
++	 !defined(HURD) && !defined(AVR32)
+       /* Older versions of Darwin seem to lack getcontext(). */
+       /* ARM Linux often doesn't support a real getcontext(). */
+       ucontext_t ctxt;

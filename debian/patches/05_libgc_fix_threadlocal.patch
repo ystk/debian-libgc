@@ -1,0 +1,23 @@
+Description: BDWGC change for stop scanning freelist of dead threads
+Author: NIIBE Yutaka <gniibe@fsij.org>
+Forwarded: Yes
+Last-Update: 2010-04-16
+
+2010-04-16  NIIBE Yutaka  <gniibe@fsij.org>
+
+	* pthread_support.c (GC_mark_thread_local_free_lists): Mark only
+	for live threads.
+
+--- gauche-0.9.orig/gc/pthread_support.c	5 Mar 2010 14:26:16 -0000
++++ gauche-0.9/gc/pthread_support.c	2010-04-16 17:04:59.000000000 +0900
+@@ -235,7 +235,9 @@ void GC_mark_thread_local_free_lists(voi
+     
+     for (i = 0; i < THREAD_TABLE_SZ; ++i) {
+       for (p = GC_threads[i]; 0 != p; p = p -> next) {
+-	GC_mark_thread_local_fls_for(&(p->tlfs));
++	if (!(p -> flags & FINISHED)) {
++	  GC_mark_thread_local_fls_for(&(p->tlfs));
++	}
+       }
+     }
+ }

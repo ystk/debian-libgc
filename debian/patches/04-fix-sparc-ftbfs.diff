@@ -1,0 +1,13 @@
+diff -urNad /tmp/bp-build/gc-7.1.orig/configure.ac /tmp/bp-build/gc-7.1/configure.ac
+--- gc-7.1.orig/configure.ac	2009-08-13 23:40:28.000000000 +0100
++++ gc-7.1/configure.ac	2009-08-13 23:56:04.000000000 +0100
+@@ -402,6 +402,9 @@
+     dnl This is now redundant, but it is also important for incremental GC
+     dnl performance under Irix.
+     ;;
++ sparc*-*-linux*)
++    machdep="mach_dep.lo sparc_mach_dep.lo"
++    ;;
+  sparc-*-netbsd*)
+     machdep="mach_dep.lo sparc_netbsd_mach_dep.lo"
+     ;;

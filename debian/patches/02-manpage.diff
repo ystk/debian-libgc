@@ -1,0 +1,27 @@
+
+Various manpage changes. Imported semi-automatically from .diff.gz.
+
+diff --git a/doc/gc.man b/doc/gc.man
+index 2a550c7..5c0232a 100644
+--- a/doc/gc.man
++++ b/doc/gc.man
+@@ -1,8 +1,8 @@
+-.TH GC_MALLOC 1L "2 October 2003"
++.TH GC_MALLOC 3 "2 October 2003"
+ .SH NAME
+ GC_malloc, GC_malloc_atomic, GC_free, GC_realloc, GC_enable_incremental, GC_register_finalizer, GC_malloc_ignore_off_page, GC_malloc_atomic_ignore_off_page, GC_set_warn_proc \- Garbage collecting malloc replacement
+ .SH SYNOPSIS
+-#include "gc.h"
++#include <gc.h>
+ .br
+ void * GC_malloc(size_t size);
+ .br
+@@ -11,7 +11,7 @@ void GC_free(void *ptr);
+ void * GC_realloc(void *ptr, size_t size);
+ .br
+ .sp
+-cc ... gc.a
+++ cc ... -I/usr/include/gc -lgc
+ .LP
+ .SH DESCRIPTION
+ .I GC_malloc

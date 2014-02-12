@@ -1,0 +1,28 @@
+
+Catch all linux variants.
+
+ -- Chris Lamb <lamby@debian.org>  Wed, 12 Aug 2009 01:14:45 +0100
+
+diff -urNad /tmp/bp-build/gc-7.1.orig/configure.ac /tmp/bp-build/gc-7.1/configure.ac
+--- gc-7.1.orig/configure.ac	2009-08-12 01:11:00.000000000 +0100
++++ gc-7.1/configure.ac	2009-08-12 01:11:40.000000000 +0100
+@@ -80,7 +80,7 @@
+     THREADS=posix
+     THREADDLLIBS=-lpthread
+     case "$host" in
+-     x86-*-linux* | ia64-*-linux* | i586-*-linux* | i686-*-linux* | x86_64-*-linux* | alpha-*-linux*)
++     *-*-linux*)
+ 	AC_DEFINE(GC_LINUX_THREADS)
+ 	AC_DEFINE(_REENTRANT)
+         if test "${enable_parallel_mark}" = yes; then
+@@ -89,10 +89,6 @@
+ 	AC_DEFINE(THREAD_LOCAL_ALLOC)
+ 	AC_MSG_WARN("Explict GC_INIT() calls may be required.");
+ 	;;
+-     *-*-linux*)
+-	AC_DEFINE(GC_LINUX_THREADS)
+-	AC_DEFINE(_REENTRANT)
+-	;;
+      *-*-aix*)
+ 	AC_DEFINE(GC_AIX_THREADS)
+ 	AC_DEFINE(_REENTRANT)
