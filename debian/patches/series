@@ -4,8 +4,6 @@
 04-fix-sparc-ftbfs.diff
 #05-s390-includes.diff
 enable-threads.diff
-06-m68k-no-getcontext.diff
-CVE-2012-2673-calloc-1.diff
-CVE-2012-2673-calloc-2.diff
-CVE-2012-2673-calloc-3.diff
-CVE-2012-2673-malloc.diff
+allow-automake-1.13
+arm64.diff
+or1k-port.diff

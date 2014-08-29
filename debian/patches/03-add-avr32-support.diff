@@ -1,9 +1,9 @@
-Index: libgc-7.1.new/include/private/gcconfig.h
+Index: libgc/include/private/gcconfig.h
 ===================================================================
---- libgc-7.1.new.orig/include/private/gcconfig.h	2009-08-12 20:10:04.000000000 +0100
-+++ libgc-7.1.new/include/private/gcconfig.h	2009-08-12 20:10:18.000000000 +0100
-@@ -258,6 +258,10 @@
- #    define ARM32
+--- libgc.orig/include/private/gcconfig.h	2013-06-09 13:26:20.000000000 +0200
++++ libgc/include/private/gcconfig.h	2013-06-09 13:52:33.028299704 +0200
+@@ -273,6 +273,10 @@
+ #    define SPARC
  #    define mach_type_known
  # endif
 +# if defined(LINUX) && defined(__avr32__)
@@ -13,7 +13,7 @@ Index: libgc-7.1.new/include/private/gcconfig.h
  # if defined(LINUX) && defined(__sh__)
  #    define SH
  #    define mach_type_known
-@@ -1781,6 +1785,19 @@
+@@ -1996,6 +2000,19 @@
  #   endif
  #endif
  
@@ -33,23 +33,10 @@ Index: libgc-7.1.new/include/private/gcconfig.h
  # ifdef CRIS
  #   define MACH_TYPE "CRIS"
  #   define CPP_WORDSZ 32
-Index: libgc-7.1.new/include/private/thread_local_alloc.h
-===================================================================
---- libgc-7.1.new.orig/include/private/thread_local_alloc.h	2009-08-12 20:10:04.000000000 +0100
-+++ libgc-7.1.new/include/private/thread_local_alloc.h	2009-08-12 20:10:18.000000000 +0100
-@@ -39,7 +39,7 @@
- #     else
- #       define USE_WIN32_COMPILER_TLS
- #     endif /* !GNU */
--#   elif defined(LINUX) && !defined(ARM32) && \
-+#   elif defined(LINUX) && !defined(ARM32) && !defined(AVR32) && \
- 		 (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >=3))
- #     define USE_COMPILER_TLS
- #   elif (defined(GC_DGUX386_THREADS) || defined(GC_OSF1_THREADS) || \
-Index: libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops/sysdeps/gcc/avr32.h
+Index: libgc/libatomic_ops-1.2/src/atomic_ops/sysdeps/gcc/avr32.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops/sysdeps/gcc/avr32.h	2009-08-12 20:10:18.000000000 +0100
++++ libgc/libatomic_ops-1.2/src/atomic_ops/sysdeps/gcc/avr32.h	2013-06-09 13:52:33.028299704 +0200
 @@ -0,0 +1,44 @@
 +/*
 + * Copyright (C) 2009 Bradley Smith <brad@brad-smith.co.uk>
@@ -95,30 +82,3 @@ Index: libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops/sysdeps/gcc/avr32.h
 +}
 +
 +#define AO_HAVE_test_and_set
-Index: libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops.h
-===================================================================
---- libgc-7.1.new.orig/libatomic_ops-1.2/src/atomic_ops.h	2009-08-12 20:10:04.000000000 +0100
-+++ libgc-7.1.new/libatomic_ops-1.2/src/atomic_ops.h	2009-08-12 20:10:18.000000000 +0100
-@@ -229,6 +229,9 @@
- # if defined(__cris__) || defined(CRIS)
- #   include "atomic_ops/sysdeps/gcc/cris.h"
- # endif
-+# if defined(__avr32__)
-+#   include "atomic_ops/sysdeps/gcc/avr32.h"
-+# endif
- #endif /* __GNUC__ && !AO_USE_PTHREAD_DEFS */
- 
- #if defined(__INTEL_COMPILER) && !defined(AO_USE_PTHREAD_DEFS)
-Index: libgc-7.1.new/mach_dep.c
-===================================================================
---- libgc-7.1.new.orig/mach_dep.c	2009-08-12 20:10:25.000000000 +0100
-+++ libgc-7.1.new/mach_dep.c	2009-08-12 20:10:46.000000000 +0100
-@@ -175,7 +175,7 @@
- #   if defined(HAVE_PUSH_REGS)
-       GC_push_regs();
- #   elif defined(UNIX_LIKE) && !defined(DARWIN) && !defined(ARM32) && \
--	 !defined(HURD)
-+	 !defined(HURD) && !defined(AVR32)
-       /* Older versions of Darwin seem to lack getcontext(). */
-       /* ARM Linux often doesn't support a real getcontext(). */
-       ucontext_t ctxt;

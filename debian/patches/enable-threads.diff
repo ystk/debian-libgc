@@ -1,19 +1,10 @@
-Index: libgc-7.1/include/gc_config_macros.h
+Index: libgc/include/gc_config_macros.h
 ===================================================================
---- libgc-7.1.orig/include/gc_config_macros.h	2011-03-12 18:35:55.961958955 +0100
-+++ libgc-7.1/include/gc_config_macros.h	2011-03-12 18:36:09.169958955 +0100
-@@ -102,7 +102,7 @@
- #   define GC_DARWIN_THREADS
- #   define GC_PTHREADS
- # endif
--# if !defined(GC_PTHREADS) && (defined(__FreeBSD__) || defined(__DragonFly__))
-+# if !defined(GC_PTHREADS) && (defined(__FreeBSD__) || defined(__DragonFly__) || defined(__FreeBSD_kernel__))
- #   define GC_FREEBSD_THREADS
- #   define GC_PTHREADS
- # endif
-@@ -118,6 +118,10 @@
- #   define GC_AIX_THREADS
- #   define GC_PTHREADS
+--- libgc.orig/include/gc_config_macros.h	2013-06-09 13:26:20.000000000 +0200
++++ libgc/include/gc_config_macros.h	2013-06-09 13:53:15.012504958 +0200
+@@ -121,6 +121,10 @@
+ # if defined(__rtems__) && (defined(i386) || defined(__i386__))
+ #   define GC_RTEMS_PTHREADS
  # endif
 +# if defined(__gnu_hurd__)
 +#   define GC_GNU_THREADS
@@ -21,4 +12,4 @@ Index: libgc-7.1/include/gc_config_macros.h
 +# endif
  #endif /* GC_THREADS */
  
- #if defined(GC_THREADS) && !defined(GC_PTHREADS) && !defined(GC_WIN32_THREADS) \
+ #undef GC_PTHREADS

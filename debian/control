@@ -2,17 +2,24 @@ Source: libgc
 Maintainer: Christoph Egger <christoph@debian.org>
 Section: libs
 Priority: standard
-Build-Depends: debhelper (>= 7.0.50~), autoconf, libatomic-ops-dev (>= 7.2~)
-Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9),
+ dh-autoreconf,
+ autotools-dev,
+ libatomic-ops-dev (>= 7.3~),
+ pkg-config,
+ pkg-kde-tools
+Standards-Version: 3.9.4
 Homepage: http://www.hpl.hp.com/personal/Hans_Boehm/gc/
 Vcs-Git: git://git.debian.org/git/collab-maint/libgc.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/libgc.git;a=summary
 
 Package: libgc1c2
 Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Conflicts: libgc1
-Replaces: libgc1
+Replaces: libgc1, libgc1c3
+Multi-Arch: same
 Description: conservative garbage collector for C and C++
  Boehm-Demers-Weiser's GC is a garbage collecting storage allocator that is
  intended to be used as a plug-in replacement for C's malloc or C++'s new().
@@ -31,6 +38,7 @@ Architecture: any
 Priority: optional
 Section: libdevel
 Depends: ${misc:Depends}, libgc1c2 (= ${binary:Version}), libc-dev
+Multi-Arch: same
 Description: conservative garbage collector for C (development)
  Boehm-Demers-Weiser's GC is a garbage collecting storage allocator that is
  intended to be used as a plug-in replacement for C's malloc or C++'s new().

@@ -1,1 +1,1 @@
-usr/lib/libgc*.so.*
+usr/lib/*/libgc*.so.*

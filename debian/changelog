@@ -1,3 +1,70 @@
+libgc (1:7.2d-6.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Modify patch for OpenRISC/or1k support (or1k-port.diff) to add
+    indication that getcontext() is not supported in this architecture
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Wed, 06 Aug 2014 20:57:40 +0100
+
+libgc (1:7.2d-6.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add OpenRISC/or1k support: gcconfig.h (or1k-port.diff) and symbols
+    file (Closes: #756538)
+
+ -- Manuel A. Fernandez Montecelo <mafm@debian.org>  Wed, 30 Jul 2014 20:26:41 +0100
+
+libgc (1:7.2d-6.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Use dh-autoreconf in build to support new architectures (Closes: #732349)
+  * Add aarch64/arm64 support: gcconfig.h and symbols file 
+
+ -- Wookey <wookey@debian.org>  Thu, 3 Jul 2014 01:25:03 +0000
+
+libgc (1:7.2d-6) unstable; urgency=medium
+
+  * Run full autoreconf during build
+     (Closes: #732349)
+
+ -- Christoph Egger <christoph@debian.org>  Mon, 23 Dec 2013 12:29:01 +0100
+
+libgc (1:7.2d-5) unstable; urgency=low
+
+  * Add Replaces: libgc1c3 for Ubuntu
+  * Import symbol diffs from debian-ports
+
+ -- Christoph Egger <christoph@debian.org>  Wed, 03 Jul 2013 22:14:42 +0200
+
+libgc (1:7.2d-4) unstable; urgency=low
+
+  * Import refined symbols for arm and mips
+
+ -- Christoph Egger <christoph@debian.org>  Tue, 02 Jul 2013 17:35:01 +0200
+
+libgc (1:7.2d-3) unstable; urgency=low
+
+  * Upload to unstable 
+    * 7.2 misses some private symbols which are now properly hidden by
+      libgc and were unused by other software in debian
+  * Generate Symbols file by pkg-kde helper scripts
+
+ -- Christoph Egger <christoph@debian.org>  Mon, 01 Jul 2013 22:48:07 +0200
+
+libgc (1:7.2d-2) experimental; urgency=low
+
+  * Improve symbols file using pkg-kde-tools
+
+ -- Christoph Egger <christoph@debian.org>  Sun, 09 Jun 2013 16:33:34 +0200
+
+libgc (1:7.2d-1) experimental; urgency=low
+
+  * New upstream release (Closes: #673965)
+  * Add build-dependency for pkg-config to allow detection of libatomic_ops
+  * Import patch Christian M. Amsüss to enable multiarch (Closes: #687493)
+
+ -- Christoph Egger <christoph@debian.org>  Sun, 09 Jun 2013 13:26:37 +0200
+
 libgc (1:7.1-9.1) unstable; urgency=low
 
   * Non-maintainer upload.

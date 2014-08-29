@@ -1,0 +1,18 @@
+Index: libgc/autogen.sh
+===================================================================
+--- libgc.orig/autogen.sh	2013-06-09 13:26:20.252610791 +0200
++++ libgc/autogen.sh	2013-06-09 14:10:20.893520227 +0200
+@@ -1,11 +1,11 @@
+-#! /bin/sh
++#! /bin/bash
+ 
+ set -e
+ 
+ # These version are ok, pre-1.7 is not.  Post 1.7 may produce a lot of
+ # warnings for unrelated projects, so prefer 1.7 for now.
+ am_version=
+-for v in 1.10 1.9 1.8 1.7; do
++for v in 1.11 1.10 1.9 1.8 1.7; do
+     if type -p &>/dev/null automake-$v; then
+ 	am_version="-$v"
+ 	break
