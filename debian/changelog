@@ -1,3 +1,10 @@
+libgc (1:7.2d-6.4) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add mips64(el) and mipsn32(el) support to symbol file (Closes: #719058).
+
+ -- YunQiang Su <syq@debian.org>  Wed, 15 Oct 2014 09:51:59 +0800
+
 libgc (1:7.2d-6.3) unstable; urgency=medium
 
   * Non-maintainer upload.
