@@ -7,3 +7,8 @@ enable-threads.diff
 allow-automake-1.13
 arm64.diff
 or1k-port.diff
+
+CVE-2016-9427-1.patch
+CVE-2016-9427-2.patch
+CVE-2016-9427-3.patch
+
